@@ -4,7 +4,7 @@ import styles from "./page.module.css";
 export default function Home() {
   return (
     <div className={styles.page}>
-      <p>STRAW Api testing</p>
+      <p>STRAW Api testing with React/Nextjs</p>
     </div>
   );
 }
