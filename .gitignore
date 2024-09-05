@@ -36,4 +36,4 @@ yarn-error.log*
 next-env.d.ts
 
 # python
-/backend-fastapi/__pycache__
+/backend_fastapi/__pycache__
