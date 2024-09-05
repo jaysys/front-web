@@ -67,15 +67,19 @@ export default function ImageInfoPage() {
       return;
     }
 
-    if (isNaN(x) || isNaN(y)) {
+    // Use default values if x or y are empty
+    const xCoord = x || "150";
+    const yCoord = y || "150";
+
+    if (isNaN(xCoord) || isNaN(yCoord)) {
       setError("Please enter valid numeric values for coordinates.");
       return;
     }
 
     const formData = new FormData();
     formData.append("image", image);
-    formData.append("x", x);
-    formData.append("y", y);
+    formData.append("x", xCoord);
+    formData.append("y", yCoord);
 
     try {
       const res = await fetch("http://127.0.0.1:8000/putmarkonimage/", {
