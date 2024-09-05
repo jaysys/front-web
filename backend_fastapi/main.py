@@ -4,7 +4,11 @@ from typing import Union  # Import Union
 from PIL import Image
 import io
 
-app = FastAPI()
+app = FastAPI(
+    title="STRW API",
+    description="This is a description of my API.",
+    version="1.0.0",
+)
 
 # CORS configuration
 app.add_middleware(
@@ -14,6 +18,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+from fastapi import FastAPI
+
+
+
+
 
 @app.get("/")
 def read_root():
