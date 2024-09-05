@@ -4,6 +4,8 @@ import { useState } from "react";
 
 export default function ImageInfoPage() {
   const [image, setImage] = useState(null);
+  const [x, setX] = useState("");
+  const [y, setY] = useState("");
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
 
@@ -12,6 +14,9 @@ export default function ImageInfoPage() {
       setImage(e.target.files[0]);
     }
   };
+
+  const handleXChange = (e) => setX(e.target.value);
+  const handleYChange = (e) => setY(e.target.value);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,10 +67,15 @@ export default function ImageInfoPage() {
       return;
     }
 
+    if (isNaN(x) || isNaN(y)) {
+      setError("Please enter valid numeric values for coordinates.");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("image", image);
-    formData.append("x", "100"); // Example coordinate
-    formData.append("y", "150"); // Example coordinate
+    formData.append("x", x);
+    formData.append("y", y);
 
     try {
       const res = await fetch("http://127.0.0.1:8000/putmarkonimage/", {
@@ -102,6 +112,18 @@ export default function ImageInfoPage() {
       </form>
 
       <form onSubmit={handleMarkSubmit}>
+        <input
+          type="number"
+          value={x}
+          onChange={handleXChange}
+          placeholder="X coordinate"
+        />
+        <input
+          type="number"
+          value={y}
+          onChange={handleYChange}
+          placeholder="Y coordinate"
+        />
         <button type="submit">Put Mark on Image</button>
       </form>
 
