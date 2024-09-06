@@ -46,6 +46,21 @@ async def get_image_info(ImageInfo: UploadFile = File(...)):
         "height": height
     }
 
+@app.get("/marked_images")
+async def get_marked_images():
+    images_folder = "marked_images"
+    base_url = "http://127.0.0.1:8000/marked_images"
+    
+    # List all files in the marked_images folder
+    images = [
+        f"{base_url}/{filename}" 
+        for filename in os.listdir(images_folder) 
+        if filename.endswith(('.png', '.jpg', '.jpeg', '.gif','.JPG','.JPEG','.PNG','.GIF'))
+    ]
+    
+    return {"images": images}
+
+
 @app.post("/putmarkonimage/")
 async def put_mark_on_image(
     image: UploadFile = File(...),
