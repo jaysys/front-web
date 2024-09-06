@@ -13,15 +13,23 @@ To resolve the CORS (Cross-Origin Resource Sharing) issue you're encountering, y
    In your FastAPI `main.py` file, add the following lines to configure CORS:
 
 ```python
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from typing import Union
-from PIL import Image
+from PIL import Image, ImageDraw
 import io
+import os
 
-app = FastAPI()
+app = FastAPI(
+    title="STRW API",
+    description="This is a description of my API.",
+    version="1.0.0",
+)
 
-# Allow CORS from specific origins
+# CORS configuration
+#   -> allow_origins=["*"],  # Allow all origins
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],  # React app's origin
@@ -30,9 +38,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Serve static files
+app.mount("/marked_images", StaticFiles(directory="marked_images"), name="marked_images")
+
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return {"STRAWAPI": f"{app.version}"}
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: Union[str, None] = None):
@@ -49,6 +60,56 @@ async def get_image_info(ImageInfo: UploadFile = File(...)):
         "width": width,
         "height": height
     }
+
+@app.get("/marked_images")
+async def get_marked_images():
+    images_folder = "marked_images"
+    base_url = "http://127.0.0.1:8000/marked_images"
+
+    # List all files in the marked_images folder
+    images = [
+        f"{base_url}/{filename}"
+        for filename in os.listdir(images_folder)
+        if filename.endswith(('.png', '.jpg', '.jpeg', '.gif','.JPG','.JPEG','.PNG','.GIF'))
+    ]
+
+    return {"images": images}
+
+
+@app.post("/putmarkonimage/")
+async def put_mark_on_image(
+    image: UploadFile = File(...),
+    x: int = Form(...),
+    y: int = Form(...),
+):
+    try:
+        # Load the image
+        contents = await image.read()
+        img = Image.open(io.BytesIO(contents))
+        draw = ImageDraw.Draw(img)
+
+        # Draw a circle at (x, y) with radius 10
+        radius = 10
+        left_up_point = (x - radius, y - radius)
+        right_down_point = (x + radius, y + radius)
+        draw.ellipse([left_up_point, right_down_point], outline="red", width=3)
+
+        # Save the marked image
+        output_path = f"marked_images/{os.path.splitext(image.filename)[0]}_marked{os.path.splitext(image.filename)[1]}"
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        img.save(output_path)
+
+        return JSONResponse(content={
+            "filename": os.path.basename(output_path),
+            "message": "Image marked and saved successfully.",
+            "url": f"http://127.0.0.1:8000/marked_images/{os.path.basename(output_path)}"
+        })
+
+    except Exception as e:
+        # Log the exception and return a 500 error
+        print(f"Error processing image: {e}")
+        raise HTTPException(status_code=500, detail="Internal Server Error")
+
 ```
 
 ### Explanation:
@@ -68,76 +129,3 @@ uvicorn main:app --reload
 ### Try the React App Again:
 
 With CORS now enabled, the React app should be able to send the request without being blocked. Test the form again by uploading your image from the React app, and the CORS error should be resolved.
-
-Let me know if you need further assistance!
-
----
-
----
-
-It seems the error is related to an issue with how `File` is being imported and used in your `FastAPI` app. Specifically, the `File` class is not being recognized, which is likely due to a missing or incorrect import.
-
-### Solution:
-
-Ensure that the `UploadFile` and `File` classes are properly imported from `fastapi`. Update the `main.py` file to include these necessary imports.
-
-### Corrected `main.py` file:
-
-```python
-from fastapi import FastAPI, UploadFile, File
-from fastapi.middleware.cors import CORSMiddleware
-from PIL import Image
-import io
-
-app = FastAPI()
-
-# CORS configuration
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # React app's origin
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
-
-@app.post("/getimageinfo/")
-async def get_image_info(ImageInfo: UploadFile = File(...)):
-    filename = ImageInfo.filename
-    contents = await ImageInfo.read()
-    image = Image.open(io.BytesIO(contents))
-    width, height = image.size
-    return {
-        "filename": filename,
-        "width": width,
-        "height": height
-    }
-```
-
-### Key Changes:
-
-- I added the missing `File` and `UploadFile` imports from `fastapi`:
-  ```python
-  from fastapi import UploadFile, File
-  ```
-
-### Next Steps:
-
-1. **Restart your FastAPI server**:
-   After making these changes, try restarting your server:
-
-   ```bash
-   uvicorn main:app --reload
-   ```
-
-2. **Test the application again**:
-   Now, it should work without any import-related errors.
-
-Let me know if the issue persists or if you encounter any other errors!
