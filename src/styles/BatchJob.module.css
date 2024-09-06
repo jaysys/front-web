@@ -1,0 +1,29 @@
+/* src/styles/BatchJob.module.css */
+.container {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.startButton,
+.stopButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.startButton {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+.stopButton {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
