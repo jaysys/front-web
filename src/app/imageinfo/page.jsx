@@ -104,7 +104,7 @@ export default function ImageInfoPage() {
 
   return (
     <div>
-      <h1>Upload Image and Get Info (JPEG/PNG)</h1>
+      <h1>Get Image Info & Manipulate (JPEG/PNG) Demo</h1>
 
       <form onSubmit={handleSubmit}>
         <input

@@ -42,7 +42,7 @@ export default function BatchJob() {
 
   return (
     <div className={styles.container}>
-      <h1>Batch Job</h1>
+      <h1>Batch Job Demo</h1>
       {isJobRunning ? (
         <>
           <p>
