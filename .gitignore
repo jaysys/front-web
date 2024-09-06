@@ -37,4 +37,6 @@ next-env.d.ts
 
 # python
 /backend_fastapi/__pycache__
+/backend_fastapi/markedimages/*
 /backend_fastapi/marked_images/*
+/backend_fastapi/images/*
