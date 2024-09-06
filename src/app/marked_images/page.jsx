@@ -39,13 +39,9 @@ export default function MarkedImages() {
         selectedImages.map((image) => {
           // Extract the image name from URL if needed
           const imageName = new URL(image).pathname.split("/").pop();
-
-          return fetch(
-            `http://127.0.0.1:8000/images/${encodeURIComponent(imageName)}`,
-            {
-              method: "DELETE",
-            }
-          );
+          return fetch(`http://127.0.0.1:8000/images/${imageName}`, {
+            method: "DELETE",
+          });
         })
       );
 
