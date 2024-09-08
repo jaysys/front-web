@@ -148,3 +148,16 @@ uvicorn main:app --reload
 ### Try the React App Again:
 
 With CORS now enabled, the React app should be able to send the request without being blocked. Test the form again by uploading your image from the React app, and the CORS error should be resolved.
+
+image url list - Response body 형식
+
+```
+{
+  "images": [
+    "http://127.0.0.1:8000/marked_images/스크린샷 2024-09-06 오후 4.12.52_marked.png",
+    "http://127.0.0.1:8000/marked_images/IMG_1564_marked.jpg",
+    "http://127.0.0.1:8000/marked_images/IMG459_marked.jpg",
+    "http://127.0.0.1:8000/marked_images/IMG_0222_marked.jpg"
+  ]
+}
+```

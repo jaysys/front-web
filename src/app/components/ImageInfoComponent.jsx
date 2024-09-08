@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export default function ImageInfoPage() {
+export default function ImageInfoComponent() {
   const [image, setImage] = useState(null);
   const [x, setX] = useState("");
   const [y, setY] = useState("");
@@ -104,7 +104,7 @@ export default function ImageInfoPage() {
 
   return (
     <div>
-      <h1>Get Image Info & Manipulate (JPEG/PNG) Demo</h1>
+      <h1>Get Image Info & Manipulate (JPEG/PNG)</h1>
 
       <form onSubmit={handleSubmit}>
         <input

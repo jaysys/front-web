@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { startBatchJob, stopBatchJob } from "@/lib/api";
 import styles from "@/styles/BatchJob.module.css";
 
-export default function BatchJob() {
+export default function BatchJobComponent() {
   const [isJobRunning, setIsJobRunning] = useState(false); // 배치 작업이 실행 중인지 여부
   const [jobStartTime, setJobStartTime] = useState(null); // 배치 작업 시작 시간
   const [executionCount, setExecutionCount] = useState(0); // 배치 작업 수행 횟수

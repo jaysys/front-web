@@ -1,6 +1,19 @@
-To test the FastAPI endpoint using a React app with Next.js (v14), we will create a simple form that allows users to upload an image and sends it to the FastAPI server using the `fetch` API with a `POST` request.
+## 3000번과 8000번 포트를 사용하니 해당 포트를 사용하는 앱은 모두 닫는다.
 
-Here’s a sample React component that you can use in your Next.js app, using Next.js 14’s app router (`app` directory) structure.
+- 8000번 포트에 fast api 구동시키고
+
+```
+cd fastapi
+Pro-M3 fastapi % uvicorn main:app --reload
+```
+
+- 3000번 포트에 react app 구동시킨다.
+
+```
+npm run dev
+```
+
+## 소스 구성 내용 개략 설명
 
 ### Steps:
 

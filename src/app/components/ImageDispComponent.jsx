@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import styles from "@/styles/MarkedImages.module.css";
 
-export default function MarkedImages() {
+export default function ImageDispComponent() {
   const [images, setImages] = useState([]);
   const [selectedImages, setSelectedImages] = useState([]); // State to track selected images
 
@@ -39,6 +39,7 @@ export default function MarkedImages() {
         selectedImages.map((image) => {
           // Extract the image name from URL if needed
           const imageName = new URL(image).pathname.split("/").pop();
+
           return fetch(`http://127.0.0.1:8000/images/${imageName}`, {
             method: "DELETE",
           });
@@ -64,7 +65,7 @@ export default function MarkedImages() {
 
   return (
     <div className={styles.container}>
-      <h1>Marked Images</h1>
+      <h1>Marked Image Disp</h1>
 
       {/* Refresh Button */}
       <button onClick={fetchImages} className={styles.refreshButton}>
