@@ -1,9 +1,9 @@
 import React from "react";
 
-const WelcomePage = () => {
+const WelcomePage = ({ msg = "j.ho " }) => {
   return (
     <div>
-      <h2>Welcome to my playground!</h2>
+      <h2>Welcome to my {msg} playground!</h2>
     </div>
   );
 };

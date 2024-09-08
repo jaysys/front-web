@@ -8,8 +8,7 @@ import WelcomePage from "./features/WelcomePage";
 export default function Home() {
   return (
     <div className={styles.page}>
-      <WelcomePage />
-      <p>STRAW Api testing with React/Nextjs</p>
+      <WelcomePage msg="'STRAW Api testing with React/Nextjs'" />
       <ImageInfoComponent />
       <ImageDispComponent />
       <FindImgDiffComponent />
